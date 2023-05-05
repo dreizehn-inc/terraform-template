@@ -119,6 +119,6 @@ resource "google_cloud_run_service_iam_member" "run_all_users" {
   role     = "roles/run.invoker"
   member   = "allUsers"
   depends_on = [
-    google_cloud_run_service.services
+    google_project_service.service,
   ]
 }
