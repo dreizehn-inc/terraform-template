@@ -3,4 +3,5 @@ locals {
   location        = ""
   env             = ""
   tf_state_bucket = ""
+  repository_id   = ""
 }

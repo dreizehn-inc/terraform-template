@@ -1,0 +1,1 @@
+../../base/artifact_registry.tf
