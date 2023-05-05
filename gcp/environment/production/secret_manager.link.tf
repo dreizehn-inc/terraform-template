@@ -1,0 +1,1 @@
+../../base/secret_manager.tf
