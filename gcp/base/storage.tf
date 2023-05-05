@@ -9,4 +9,8 @@ resource "google_storage_bucket" "asset_bucket" {
     response_header = ["content-type", "cache-control", "x-requested-with"]
     max_age_seconds = 3600
   }
+
+  depends_on = [
+    google_project_service.service,
+  ]
 }

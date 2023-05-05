@@ -20,6 +20,10 @@ resource "google_sql_database_instance" "master_instance" {
     }
 
   }
+
+  depends_on = [
+    google_project_service.service,
+  ]
 }
 
 resource "google_sql_database" "database" {

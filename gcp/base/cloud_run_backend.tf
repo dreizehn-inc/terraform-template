@@ -19,6 +19,10 @@ locals {
 resource "google_service_account" "backend" {
   account_id   = "app-backend"
   display_name = "Backend Service Account"
+
+  depends_on = [
+    google_project_service.service,
+  ]
 }
 
 resource "google_project_iam_member" "backend" {
@@ -118,6 +122,7 @@ resource "google_cloud_run_service_iam_member" "run_all_users" {
   location = local.location
   role     = "roles/run.invoker"
   member   = "allUsers"
+
   depends_on = [
     google_project_service.service,
   ]
