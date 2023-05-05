@@ -1,7 +1,10 @@
+DEV_GCP_PROJECT_ID = ""
+STG_GCP_PROJECT_ID = ""
+PRD_GCP_PROJECT_ID = ""
 
 DEV_PROJECT_PATH = environment/development
 STG_PROJECT_PATH = environment/staging
-PRO_PROJECT_PATH = environment/production
+PRD_PROJECT_PATH = environment/production
 
 .PHONY: symlink-all
 symlink-all: symlink-dev symlink-stg symlink-prd
@@ -26,9 +29,26 @@ symlink-stg:
 
 .PHONY: symlink-prd
 symlink-prd:
-	cp misc/symlink.sh ${PRO_PROJECT_PATH}/ && \
-	chmod +x ${PRO_PROJECT_PATH}/symlink.sh && \
-	cd ${PRO_PROJECT_PATH} && \
+	cp misc/symlink.sh ${PRD_PROJECT_PATH}/ && \
+	chmod +x ${PRD_PROJECT_PATH}/symlink.sh && \
+	cd ${PRD_PROJECT_PATH} && \
 	./symlink.sh && \
 	cd ../.. && \
-	rm ${PRO_PROJECT_PATH}/symlink.sh
+	rm ${PRD_PROJECT_PATH}/symlink.sh
+
+
+.PHONY: encrypt-sops-dev
+encrypt-sops-dev:
+	cd ${DEV_PROJECT_PATH} && \
+	sops --input-type json \
+		--encrypt \
+		--gcp-kms projects/${DEV_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
+		secrets/sops_secrets.json > secrets/sops_secrets_encrypted.json
+
+.PHONY: decrypt-sops-dev
+decrypt-sops-dev:
+	cd ${DEV_PROJECT_PATH} && \
+	sops --input-type json \
+		--decrypt \
+		--gcp-kms projects/${DEV_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
+		secrets/sops_secrets_encrypted.json > secrets/sops_secrets_decrypt.json
