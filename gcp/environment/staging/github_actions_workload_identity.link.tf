@@ -1,0 +1,1 @@
+../../base/github_actions_workload_identity.tf
