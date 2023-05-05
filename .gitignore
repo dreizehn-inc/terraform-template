@@ -37,3 +37,5 @@ terraform.rc
 terraform/environment/*/symlink.sh
 terraform/environment/*/terraform_local_apply.sh
 service_account.json
+sops_secrets.json
+sops_secrets_decrypt.json
