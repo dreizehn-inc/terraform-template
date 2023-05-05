@@ -3,6 +3,9 @@ DEV_PROJECT_PATH = environment/development
 STG_PROJECT_PATH = environment/staging
 PRO_PROJECT_PATH = environment/production
 
+.PHONY: symlink-all
+symlink-all: symlink-dev symlink-stg symlink-prd
+
 .PHONY: symlink-dev
 symlink-dev:
 	cp misc/symlink.sh ${DEV_PROJECT_PATH}/ && \
