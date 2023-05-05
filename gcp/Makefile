@@ -51,4 +51,4 @@ decrypt-sops-dev:
 	sops --input-type json \
 		--decrypt \
 		--gcp-kms projects/${DEV_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
-		secrets/sops_secrets_encrypted.json > secrets/sops_secrets_decrypt.json
+		secrets/sops_secrets_encrypted.json > secrets/sops_secrets_decrypted.json
