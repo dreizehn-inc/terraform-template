@@ -12,11 +12,19 @@ resource "google_service_account" "github_actions" {
   project      = local.project
   account_id   = "github-actions-agent"
   display_name = "A service account for GitHub Actions"
+
+  depends_on = [
+    google_project_service.service,
+  ]
 }
 
 resource "google_project_service" "project" {
   project = local.project
   service = "iamcredentials.googleapis.com"
+
+  depends_on = [
+    google_project_service.service,
+  ]
 }
 
 resource "google_iam_workload_identity_pool" "github_actions" {
@@ -25,6 +33,10 @@ resource "google_iam_workload_identity_pool" "github_actions" {
   workload_identity_pool_id = "gh-oidc-pool"
   display_name              = "gh-oidc-pool"
   description               = "Workload Identity Pool for GitHub Actions"
+
+  depends_on = [
+    google_project_service.service,
+  ]
 }
 
 
