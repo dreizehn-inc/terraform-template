@@ -15,3 +15,7 @@ locals {
   db_availability_type       = ""
   db_password_secret_version = "1"
 }
+
+data "sops_file" "secrets" {
+  source_file = "./secrets/sops_secrets_encrypted.json"
+}
