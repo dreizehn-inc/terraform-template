@@ -5,7 +5,9 @@ locals {
   tf_state_bucket       = ""
   repository_id         = ""
   github_repositories   = []
+  vpc_network_name      = ""
   gcs_asset_bucket_name = ""
+
 
   db_master_instance_name    = ""
   db_database_name           = ""
