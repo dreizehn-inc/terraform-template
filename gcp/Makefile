@@ -1,3 +1,6 @@
+ENV = dev
+PROJECT_PATH = ""
+
 DEV_GCP_PROJECT_ID = ""
 STG_GCP_PROJECT_ID = ""
 PRD_GCP_PROJECT_ID = ""
@@ -51,4 +54,36 @@ decrypt-sops-dev:
 	sops --input-type json \
 		--decrypt \
 		--gcp-kms projects/${DEV_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
+		secrets/sops_secrets_encrypted.json > secrets/sops_secrets_decrypted.json
+
+.PHONY: encrypt-sops-stg
+encrypt-sops-stg:
+	cd ${STG_PROJECT_PATH} && \
+	sops --input-type json \
+		--encrypt \
+		--gcp-kms projects/${STG_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
+		secrets/sops_secrets.json > secrets/sops_secrets_encrypted.json
+
+.PHONY: decrypt-sops-stg
+decrypt-sops-stg:
+	cd ${STG_PROJECT_PATH} && \
+	sops --input-type json \
+		--decrypt \
+		--gcp-kms projects/${STG_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
+		secrets/sops_secrets_encrypted.json > secrets/sops_secrets_decrypted.json
+
+.PHONY: encrypt-sops-prd
+encrypt-sops-prd:
+	cd ${PRD_PROJECT_PATH} && \
+	sops --input-type json \
+		--encrypt \
+		--gcp-kms projects/${PRD_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
+		secrets/sops_secrets.json > secrets/sops_secrets_encrypted.json
+
+.PHONY: decrypt-sops-prd
+decrypt-sops-prd:
+	cd ${PRD_PROJECT_PATH} && \
+	sops --input-type json \
+		--decrypt \
+		--gcp-kms projects/${PRD_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
 		secrets/sops_secrets_encrypted.json > secrets/sops_secrets_decrypted.json
