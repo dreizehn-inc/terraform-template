@@ -1,5 +1,5 @@
 resource "google_sql_database_instance" "master_instance" {
-  name             = local.db_master_instance_name
+  name             = "master-instance"
   database_version = "MYSQL_8_0"
   region           = local.location
 
@@ -27,7 +27,7 @@ resource "google_sql_database_instance" "master_instance" {
 }
 
 resource "google_sql_database" "database" {
-  name     = local.db_database_name
+  name     = "maindb"
   instance = google_sql_database_instance.master_instance.name
 }
 
@@ -36,7 +36,7 @@ resource "random_password" "db_password" {
 }
 
 resource "google_sql_user" "app_user" {
-  name     = local.db_database_user_name
+  name     = "app_user"
   instance = google_sql_database_instance.master_instance.name
   password = random_password.db_password.result
 }
