@@ -36,51 +36,74 @@ symlink-prd:
 	cd ../.. && \
 	rm ${PRD_PROJECT_PATH}/symlink.sh
 
+.PHONY: tf-apply-dev
+tf-apply-dev:
+	cd ${DEV_PROJECT_PATH} && \
+	direnv exec . \
+		terraform apply
+
+.PHONY: tf-apply-stg
+tf-apply-stg:
+	cd ${STG_PROJECT_PATH} && \
+	direnv exec . \
+		terraform apply
+
+.PHONY: tf-apply-prd
+tf-apply-prd:
+	cd ${PRD_PROJECT_PATH} && \
+	direnv exec . \
+		terraform apply
 
 .PHONY: encrypt-sops-dev
 encrypt-sops-dev:
 	cd ${DEV_PROJECT_PATH} && \
-	sops --input-type json \
-		--encrypt \
-		--gcp-kms projects/${DEV_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
-		secrets/sops_secrets.json > secrets/sops_secrets_encrypted.json
+	direnv exec . \
+		sops --input-type json \
+			--encrypt \
+			--gcp-kms projects/${DEV_GCP_PROJECT_ID}/locations/global/keyRings/dev-sops-key-ring/cryptoKeys/dev-sops-key \
+			secrets/sops_secrets.json > secrets/sops_secrets_encrypted.json
 
 .PHONY: decrypt-sops-dev
 decrypt-sops-dev:
 	cd ${DEV_PROJECT_PATH} && \
-	sops --input-type json \
-		--decrypt \
-		--gcp-kms projects/${DEV_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
-		secrets/sops_secrets_encrypted.json > secrets/sops_secrets_decrypted.json
+	direnv exec . \
+		sops --input-type json \
+			--decrypt \
+			--gcp-kms projects/${DEV_GCP_PROJECT_ID}/locations/global/keyRings/dev-sops-key-ring/cryptoKeys/dev-sops-key \
+			secrets/sops_secrets_encrypted.json > secrets/sops_secrets_decrypted.json
 
 .PHONY: encrypt-sops-stg
 encrypt-sops-stg:
 	cd ${STG_PROJECT_PATH} && \
-	sops --input-type json \
-		--encrypt \
-		--gcp-kms projects/${STG_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
-		secrets/sops_secrets.json > secrets/sops_secrets_encrypted.json
+	direnv exec . \
+		sops --input-type json \
+			--encrypt \
+			--gcp-kms projects/${STG_GCP_PROJECT_ID}/locations/global/keyRings/stg-sops-key-ring/cryptoKeys/stg-sops-key \
+			secrets/sops_secrets.json > secrets/sops_secrets_encrypted.json
 
 .PHONY: decrypt-sops-stg
 decrypt-sops-stg:
 	cd ${STG_PROJECT_PATH} && \
-	sops --input-type json \
-		--decrypt \
-		--gcp-kms projects/${STG_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
-		secrets/sops_secrets_encrypted.json > secrets/sops_secrets_decrypted.json
+	direnv exec . \
+		sops --input-type json \
+			--decrypt \
+			--gcp-kms projects/${STG_GCP_PROJECT_ID}/locations/global/keyRings/stg-sops-key-ring/cryptoKeys/stg-sops-key \
+			secrets/sops_secrets_encrypted.json > secrets/sops_secrets_decrypted.json
 
 .PHONY: encrypt-sops-prd
 encrypt-sops-prd:
 	cd ${PRD_PROJECT_PATH} && \
-	sops --input-type json \
-		--encrypt \
-		--gcp-kms projects/${PRD_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
-		secrets/sops_secrets.json > secrets/sops_secrets_encrypted.json
+	direnv exec . \
+		sops --input-type json \
+			--encrypt \
+			--gcp-kms projects/${PRD_GCP_PROJECT_ID}/locations/global/keyRings/prd-sops-key-ring/cryptoKeys/prd-sops-key \
+			secrets/sops_secrets.json > secrets/sops_secrets_encrypted.json
 
 .PHONY: decrypt-sops-prd
 decrypt-sops-prd:
 	cd ${PRD_PROJECT_PATH} && \
-	sops --input-type json \
-		--decrypt \
-		--gcp-kms projects/${PRD_GCP_PROJECT_ID}/locations/global/keyRings/sops_keyring/cryptoKeys/sops_key \
-		secrets/sops_secrets_encrypted.json > secrets/sops_secrets_decrypted.json
+	direnv exec . \
+		sops --input-type json \
+			--decrypt \
+			--gcp-kms projects/${PRD_GCP_PROJECT_ID}/locations/global/keyRings/prd-sops-key-ring/cryptoKeys/prd-sops-key \
+			secrets/sops_secrets_encrypted.json > secrets/sops_secrets_decrypted.json
