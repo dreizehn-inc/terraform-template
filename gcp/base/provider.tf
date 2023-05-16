@@ -1,11 +1,12 @@
 provider "google" {
-  project = local.project
-  region  = local.location
+  project = ""
+  region  = ""
 }
 
 terraform {
   backend "gcs" {
-    bucket = local.tf_state_bucket
+    bucket = ""
+    prefix = ""
   }
 
   required_providers {
