@@ -1,0 +1,32 @@
+name: Terraform Format Check Dev
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  terraform-format-lint-check-gcp-dev:
+    runs-on: ubuntu-latest
+    env:
+      working_directory: gcp/environment/development
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install tfenv
+        run: |
+          git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+          echo "$HOME/.tfenv/bin" >> $GITHUB_PATH
+
+      - name: Setup working directory and Terraform version
+        run: |
+          cd ${{ env.working_directory }}
+          tfenv install
+          tfenv use
+
+      - name: Terraform fmt
+        run: |
+          cd ${{ env.working_directory }}
+          terraform fmt -check -recursive
