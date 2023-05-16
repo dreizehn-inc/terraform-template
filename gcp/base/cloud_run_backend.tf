@@ -51,7 +51,7 @@ resource "google_cloud_run_service" "services" {
 
         env {
           name  = "ENV"
-          value = local.enviroment
+          value = local.env
         }
         env {
           name  = "GCP_PROJECT_ID"
@@ -67,22 +67,22 @@ resource "google_cloud_run_service" "services" {
         }
         env {
           name  = "DB_HOST"
-          value = "unix(/cloudsql/${local.db_connection_name})"
+          value = "unix(/cloudsql/${google_sql_database_instance.master_instance.connection_name})"
         }
         env {
           name  = "DB_DATABASE"
-          value = local.db_name
+          value = google_sql_database.database.name
         }
         env {
           name  = "DB_USER"
-          value = local.db_user
+          value = google_sql_user.app_user.name
         }
         env {
           name = "DB_PASSWORD"
           value_from {
             secret_key_ref {
               name = google_secret_manager_secret.db_password.secret_id
-              key  = local.db_password_secret_version
+              key  = google_secret_manager_secret_version.db_password.version
             }
           }
         }
