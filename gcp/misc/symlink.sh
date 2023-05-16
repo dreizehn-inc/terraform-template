@@ -3,7 +3,7 @@
 SOURCE_DIR="../../base"
 DEST_DIR="."
 
-exclude_files=('locals.tf')
+exclude_files=('locals.tf' 'provider.tf')
 
 function check_exclude_file() {
     for i in ${exclude_files[@]}; do
@@ -18,6 +18,8 @@ echo "Creating symbolic links..."
 
 mkdir -p "$DEST_DIR"
 cd "$DEST_DIR" || exit
+
+find . -name "*.link.tf" | xargs rm -rf
 
 for file in "$SOURCE_DIR"/*; do
   check_exclude_file $file
